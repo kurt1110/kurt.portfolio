@@ -113,11 +113,22 @@ function isActive(match: string) {
 		}
 
 		navLinks.forEach((link) => {
-			link.onclick = () => {
+			link.onclick = (event) => {
 				setActive(link.dataset.nav);
 				nav?.classList.remove('is-open');
 				toggle?.setAttribute('aria-expanded', 'false');
 				toggle?.setAttribute('aria-label', 'Open menu');
+
+				// Projects: always land on #projects section
+				if (link.dataset.nav === 'projects') {
+					const onHome = (window.location.pathname.replace(/\/$/, '') || '/') === '/';
+					if (onHome) {
+						event.preventDefault();
+						history.pushState(null, '', '#projects');
+						document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+						window.dispatchEvent(new HashChangeEvent('hashchange'));
+					}
+				}
 			};
 		});
 
