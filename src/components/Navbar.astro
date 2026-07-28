@@ -2,7 +2,7 @@
 const links = [
 	{ label: 'Home', href: '/', match: 'home' },
 	{ label: 'About', href: '/about', match: 'about' },
-	{ label: 'Projects', href: '/#projects', match: 'projects' },
+	{ label: 'Projects', href: '/projects', match: 'projects' },
 	{ label: 'Contact', href: '/contact', match: 'contact' },
 ];
 
@@ -11,6 +11,7 @@ const pathname = Astro.url.pathname.replace(/\/$/, '') || '/';
 function isActive(match: string) {
 	if (match === 'home') return pathname === '/';
 	if (match === 'about') return pathname === '/about';
+	if (match === 'projects') return pathname === '/projects';
 	if (match === 'contact') return pathname === '/contact';
 	return false;
 }
@@ -82,14 +83,11 @@ function isActive(match: string) {
 
 		function resolveActive() {
 			const path = window.location.pathname.replace(/\/$/, '') || '/';
-			const hash = window.location.hash.replace('#', '');
 
 			if (path === '/about') return setActive('about');
+			if (path === '/projects') return setActive('projects');
 			if (path === '/contact') return setActive('contact');
-			if (path === '/') {
-				if (hash === 'projects') return setActive('projects');
-				return setActive('home');
-			}
+			if (path === '/') return setActive('home');
 			setActive(null);
 		}
 
@@ -113,22 +111,11 @@ function isActive(match: string) {
 		}
 
 		navLinks.forEach((link) => {
-			link.onclick = (event) => {
+			link.onclick = () => {
 				setActive(link.dataset.nav);
 				nav?.classList.remove('is-open');
 				toggle?.setAttribute('aria-expanded', 'false');
 				toggle?.setAttribute('aria-label', 'Open menu');
-
-				// Projects: always land on #projects section
-				if (link.dataset.nav === 'projects') {
-					const onHome = (window.location.pathname.replace(/\/$/, '') || '/') === '/';
-					if (onHome) {
-						event.preventDefault();
-						history.pushState(null, '', '#projects');
-						document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-						window.dispatchEvent(new HashChangeEvent('hashchange'));
-					}
-				}
 			};
 		});
 
@@ -153,17 +140,4 @@ function isActive(match: string) {
 
 	document.addEventListener('astro:page-load', initNavbar);
 	initNavbar();
-	window.addEventListener('hashchange', () => {
-		const path = window.location.pathname.replace(/\/$/, '') || '/';
-		const hash = window.location.hash.replace('#', '');
-		const navLinks = Array.from(document.querySelectorAll<HTMLAnchorElement>('#site-nav a[data-nav]'));
-		navLinks.forEach((link) => {
-			let on = false;
-			if (path === '/' && hash === 'projects') on = link.dataset.nav === 'projects';
-			else if (path === '/' && !hash) on = link.dataset.nav === 'home';
-			else if (path === '/about') on = link.dataset.nav === 'about';
-			else if (path === '/contact') on = link.dataset.nav === 'contact';
-			link.classList.toggle('active', on);
-		});
-	});
 </script>
