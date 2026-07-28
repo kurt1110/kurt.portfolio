@@ -66,9 +66,9 @@ function isActive(match: string) {
 
 <script>
 	function initNavbar() {
-		const nav = document.querySelector('#site-nav');
-		const toggle = document.querySelector('.nav-toggle');
-		const themeToggle = document.querySelector('.theme-toggle');
+		const nav = document.querySelector('#site-nav') as HTMLElement | null;
+		const toggle = document.querySelector('.nav-toggle') as HTMLButtonElement | null;
+		const themeToggle = document.querySelector('.theme-toggle') as HTMLButtonElement | null;
 		const navLinks = Array.from(document.querySelectorAll<HTMLAnchorElement>('#site-nav a[data-nav]'));
 
 		function setActive(match: string | null | undefined) {
