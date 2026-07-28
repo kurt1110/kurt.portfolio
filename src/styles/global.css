@@ -342,10 +342,10 @@ a { transition: color 180ms ease, background-color 180ms ease, border-color 180m
 	max-width: 670px;
 	margin: 0;
 	color: var(--text-soft);
-	font-size: clamp(1.35rem, 3.5vw, 2.15rem);
+	font-size: clamp(1.1rem, 2.6vw, 1.65rem);
 	font-weight: 700;
-	letter-spacing: -.04em;
-	line-height: 1.2;
+	letter-spacing: -.03em;
+	line-height: 1.35;
 }
 .about-strip a {
 	display: inline-block;
@@ -886,7 +886,7 @@ html[data-theme='light'] .follow-me-icon:hover {
 	}
 	.about-strip { padding: 2.75rem 1.1rem 2.25rem; }
 	.about-strip p:not(.eyebrow) {
-		font-size: clamp(1.2rem, 5.5vw, 1.55rem);
+		font-size: clamp(1rem, 4.5vw, 1.3rem);
 	}
 	.projects-section,
 	.faq-section { padding: 2.75rem 1.1rem 3.75rem; }
