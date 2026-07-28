@@ -11,7 +11,7 @@ export type Project = {
 	link?: string;
 	source?: string;
 	featured?: boolean;
-	image?: ImageMetadata;
+	image?: ImageMetadata | string;
 	status?: 'live' | 'offline';
 };
 
@@ -25,6 +25,16 @@ export const projects: Project[] = [
 		link: 'https://nexuslogixx.com/',
 		image: nexusImage,
 		status: 'live',
+		featured: true,
+	},
+	{
+		title: 'Baliwag Bus Tracking',
+		description:
+			'A real-time bus tracking platform for Baliwag Transit — search by bus number, live status updates, route views, and map-based location tracking for passengers.',
+		technologies: ['HTML', 'CSS', 'PHP'],
+		category: 'Transit · Offline',
+		image: '/images/baliwag-bus-tracking.jpg',
+		status: 'offline',
 		featured: true,
 	},
 	{

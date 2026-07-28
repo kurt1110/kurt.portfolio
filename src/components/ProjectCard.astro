@@ -41,14 +41,24 @@ const isOffline = project.status === 'offline';
 					<em>{project.title}</em>
 				</div>
 				<div class="project-frame-screen">
-					<Image
-						src={project.image}
-						alt={`${project.title} preview`}
-						widths={[640, 960, 1280]}
-						sizes="(max-width: 900px) 100vw, 560px"
-						class="project-photo"
-						loading="lazy"
-					/>
+					{typeof project.image === 'string' ? (
+						<img
+							src={project.image}
+							alt={`${project.title} preview`}
+							class="project-photo"
+							loading="lazy"
+							decoding="async"
+						/>
+					) : (
+						<Image
+							src={project.image}
+							alt={`${project.title} preview`}
+							widths={[640, 960, 1280]}
+							sizes="(max-width: 900px) 100vw, 560px"
+							class="project-photo"
+							loading="lazy"
+						/>
+					)}
 				</div>
 				{isLive && <p class="project-live-badge">Live</p>}
 				{isOffline && <p class="project-offline-badge">Offline</p>}
