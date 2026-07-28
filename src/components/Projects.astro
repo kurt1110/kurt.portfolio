@@ -4,6 +4,7 @@ import ProjectCard from './ProjectCard.astro';
 
 interface Props {
 	featuredOnly?: boolean;
+	liveOnly?: boolean;
 	showViewAll?: boolean;
 	eyebrow?: string;
 	heading?: string;
@@ -12,13 +13,18 @@ interface Props {
 
 const {
 	featuredOnly = false,
+	liveOnly = false,
 	showViewAll = true,
 	eyebrow = 'My ventures',
 	heading = 'Powering web innovation<br />&amp; infrastructure',
 	intro = 'Selected work built with care, clarity, and a focus on useful outcomes.',
 } = Astro.props;
 
-const visibleProjects = featuredOnly ? projects.filter((project) => project.featured) : projects;
+const visibleProjects = projects.filter((project) => {
+	if (liveOnly && project.status !== 'live') return false;
+	if (featuredOnly && !project.featured) return false;
+	return true;
+});
 ---
 <section id="projects" class="projects-section" data-reveal>
 	<div class="section-heading">
