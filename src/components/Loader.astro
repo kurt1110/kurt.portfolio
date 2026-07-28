@@ -24,13 +24,18 @@
 		document.documentElement.classList.remove('is-loading');
 		document.documentElement.removeAttribute('data-show-loader');
 
-		if (immediate || reducedMotion) {
+		const finish = () => {
 			loader.remove();
+			document.dispatchEvent(new CustomEvent('portfolio:loader-done'));
+		};
+
+		if (immediate || reducedMotion) {
+			finish();
 			return;
 		}
 
 		loader.classList.add('is-done');
-		window.setTimeout(() => loader.remove(), 520);
+		window.setTimeout(finish, 520);
 	}
 
 	function hideLoader() {
