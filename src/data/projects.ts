@@ -19,7 +19,7 @@ export const projects: Project[] = [
 	{
 		title: 'Nexus Logistics',
 		description:
-			'A live logistics website for NexusLogixx — freight forwarding, customs brokerage, shipment tracking, and transparent pricing for Philippine businesses.',
+			'An enterprise logistics resources platform featuring freight booking, cargo tracking, pricing calculation engines, automated waybills, client portals, and invoice tracking.',
 		technologies: ['Next.js', 'Laravel', 'MySQL'],
 		category: 'Client · Live',
 		link: 'https://nexuslogixx.com/',
