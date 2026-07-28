@@ -1,0 +1,46 @@
+---
+import { languages } from '../data/skills';
+---
+
+<section class="about-strip" data-reveal>
+	<p class="eyebrow">About me</p>
+	<div>
+		<p>I’m Kurt Andrei C. Arata, 21 — based in Cabanatuan City, Nueva Ecija, and studying Information Technology at Araullo University.</p>
+		<p class="about-languages-label">Languages I use</p>
+		<ul class="about-languages">
+			{languages.map((lang) => <li>{lang}</li>)}
+		</ul>
+		<a href="/about">More about me ↗</a>
+	</div>
+</section>
+
+<style>
+	.about-languages-label {
+		margin: 1.4rem 0 .7rem;
+		color: var(--accent);
+		font-family: 'Courier New', monospace;
+		font-size: .60rem;
+		font-weight: 700;
+		letter-spacing: .1em;
+		text-transform: uppercase;
+	}
+
+	.about-languages {
+		display: flex;
+		flex-wrap: wrap;
+		gap: .55rem;
+		margin: 0 0 1.4rem;
+		padding: 0;
+		list-style: none;
+	}
+
+	.about-languages li {
+		padding: .45rem .75rem;
+		border: 1px solid rgba(139, 143, 206, .2);
+		border-radius: .55rem;
+		background: rgba(13, 15, 25, .55);
+		color: #d8dae8;
+		font-size: .85rem;
+		font-weight: 600;
+	}
+</style>

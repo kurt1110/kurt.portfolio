@@ -1,0 +1,32 @@
+---
+import { skills } from '../data/skills';
+---
+
+<section id="toolkit" class="toolkit-section" data-reveal>
+	<div class="toolkit-shell">
+		<div class="toolkit-intro">
+			<p class="eyebrow">The toolkit</p>
+			<h2>Tools I use to design, build, and ship.</h2>
+			<p class="toolkit-lead">A focused stack for interfaces, backend systems, and product craft — chosen for speed, clarity, and reliability.</p>
+		</div>
+
+		<div class="toolkit-grid">
+			{skills.map((group, index) => (
+				<article class="toolkit-card" style={`--i: ${index}`}>
+					<div class="toolkit-card-top">
+						<span class="toolkit-index">0{index + 1}</span>
+						<h3>{group.label}</h3>
+					</div>
+					<ul>
+						{group.items.map((item) => (
+							<li>
+								<span class="toolkit-dot" aria-hidden="true"></span>
+								{item}
+							</li>
+						))}
+					</ul>
+				</article>
+			))}
+		</div>
+	</div>
+</section>

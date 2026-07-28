@@ -1,0 +1,102 @@
+---
+import { Image } from 'astro:assets';
+import Button from './Button.astro';
+import profileImage from '../assets/images/profile.jpg';
+---
+
+<section class="hero">
+	<div class="hero-content">
+		<p class="availability"><i></i> Available for freelance projects</p>
+		<h1>Turning Ideas into<br /><span>Digital Solutions.</span></h1>
+		<p class="hero-role">
+			I am a&nbsp;<span class="hero-typewriter" aria-live="polite">
+				<strong class="hero-typewriter-text">Full-stack developer</strong><span class="hero-typewriter-cursor" aria-hidden="true">|</span>
+			</span>
+		</p>
+		<p class="hero-description">I’m Kurt Andrei C. Arata, an aspiring IT professional and full-stack developer focused on building reliable software, modern web systems, and practical digital solutions for today’s tech industry.</p>
+		<div class="hero-actions">
+			<Button href="/#projects">View projects</Button>
+			<Button secondary href="/contact">START A PROJECT</Button>
+			<Button secondary resume href="/resume.pdf" download="Kurt-Andrei-Arata-Resume.pdf">Resume</Button>
+		</div>
+	</div>
+
+	<div class="hero-profile">
+		<div class="profile-orbit" aria-hidden="true"></div>
+		<a class="profile-card" href="/#projects" aria-label="View projects">
+			<div class="profile-image-wrap">
+				<Image src={profileImage} alt="Portrait of Kurt Andrei Arata" widths={[210, 240, 280, 330, 470]} sizes="(max-width: 420px) 210px, (max-width: 760px) 230px, (max-width: 900px) 280px, 330px" />
+			</div>
+			<div class="profile-details">
+				<p class="profile-label">FULL-STACK DEVELOPER</p>
+				<h2>Kurt Andrei C. Arata</h2>
+				<p class="profile-location"><i></i> Available FOR WORK  · LET'S TALK</p>
+			</div>
+		</a>
+	</div>
+</section>
+
+<script>
+	const roles = [
+		'Full-stack developer',
+		'IT Enthusiast',
+		'Web developer',
+		'Problem solver',
+	];
+
+	let typewriterTimer = 0;
+
+	function initTypewriter() {
+		const textEl = document.querySelector('.hero-typewriter-text');
+		const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+		window.clearTimeout(typewriterTimer);
+
+		if (!textEl || reducedMotion) return;
+
+		let roleIndex = 0;
+		let charIndex = 0;
+		let deleting = false;
+		const typeSpeed = 75;
+		const deleteSpeed = 45;
+		const holdDelay = 1600;
+		const pauseBetween = 400;
+
+		textEl.textContent = '';
+
+		const tick = () => {
+			if (!document.querySelector('.hero-typewriter-text')) return;
+			const current = roles[roleIndex];
+
+			if (!deleting) {
+				charIndex += 1;
+				textEl.textContent = current.slice(0, charIndex);
+
+				if (charIndex >= current.length) {
+					deleting = true;
+					typewriterTimer = window.setTimeout(tick, holdDelay);
+					return;
+				}
+
+				typewriterTimer = window.setTimeout(tick, typeSpeed);
+				return;
+			}
+
+			charIndex -= 1;
+			textEl.textContent = current.slice(0, Math.max(charIndex, 0));
+
+			if (charIndex <= 0) {
+				deleting = false;
+				roleIndex = (roleIndex + 1) % roles.length;
+				typewriterTimer = window.setTimeout(tick, pauseBetween);
+				return;
+			}
+
+			typewriterTimer = window.setTimeout(tick, deleteSpeed);
+		};
+
+		typewriterTimer = window.setTimeout(tick, 500);
+	}
+
+	document.addEventListener('astro:page-load', initTypewriter);
+	initTypewriter();
+</script>

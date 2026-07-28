@@ -1,0 +1,10 @@
+---
+import { projects } from '../data/projects';
+import ProjectCard from './ProjectCard.astro';
+const featuredOnly = Astro.props.featuredOnly ?? false;
+const visibleProjects = featuredOnly ? projects.filter((project) => project.featured) : projects;
+---
+<section id="projects" class="projects-section" data-reveal>
+	<div class="section-heading"><div><p class="eyebrow">My ventures</p><h2>Powering web innovation<br />&amp; infrastructure</h2><p>Selected work built with care, clarity, and a focus on useful outcomes.</p></div><a href="/#projects">View all projects ↗</a></div>
+	<div class="projects-list">{visibleProjects.map((project, index) => <ProjectCard project={project} index={index} />)}</div>
+</section>

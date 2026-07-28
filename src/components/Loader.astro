@@ -1,0 +1,49 @@
+---
+---
+
+<div class="page-loader" id="page-loader" role="status" aria-live="polite" aria-label="Loading portfolio">
+	<div class="page-loader-inner">
+		<p class="page-loader-brand">Kurt<span>.</span>dev</p>
+		<p class="page-loader-tag">Turning Ideas into Digital Solutions.</p>
+		<div class="page-loader-track" aria-hidden="true">
+			<span class="page-loader-bar"></span>
+		</div>
+		<p class="page-loader-status">Loading experience</p>
+	</div>
+</div>
+
+<script>
+	const loader = document.querySelector('#page-loader');
+	const shouldShow = document.documentElement.getAttribute('data-show-loader') === 'true';
+	const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+	const minTime = reducedMotion ? 0 : 900;
+	const started = performance.now();
+
+	function removeLoader(immediate = false) {
+		if (!loader) return;
+		document.documentElement.classList.remove('is-loading');
+		document.documentElement.removeAttribute('data-show-loader');
+
+		if (immediate || reducedMotion) {
+			loader.remove();
+			return;
+		}
+
+		loader.classList.add('is-done');
+		window.setTimeout(() => loader.remove(), 520);
+	}
+
+	function hideLoader() {
+		if (!loader || loader.classList.contains('is-done')) return;
+		const wait = Math.max(0, minTime - (performance.now() - started));
+		window.setTimeout(() => removeLoader(false), wait);
+	}
+
+	if (!shouldShow) {
+		removeLoader(true);
+	} else {
+		if (document.readyState === 'complete') hideLoader();
+		else window.addEventListener('load', hideLoader, { once: true });
+		window.setTimeout(hideLoader, 4000);
+	}
+</script>

@@ -1,0 +1,158 @@
+---
+const links = [
+	{ label: 'Home', href: '/', match: 'home' },
+	{ label: 'About', href: '/about', match: 'about' },
+	{ label: 'Projects', href: '/#projects', match: 'projects' },
+	{ label: 'Contact', href: '/contact', match: 'contact' },
+];
+
+const pathname = Astro.url.pathname.replace(/\/$/, '') || '/';
+
+function isActive(match: string) {
+	if (match === 'home') return pathname === '/';
+	if (match === 'about') return pathname === '/about';
+	if (match === 'contact') return pathname === '/contact';
+	return false;
+}
+---
+
+<header class="site-header-inner">
+		<a class="brand" href="/">Kurt<span>.</span><small>dev</small></a>
+
+		<nav class="site-nav" id="site-nav" aria-label="Main navigation">
+			{links.map((link) => {
+				const active = isActive(link.match);
+				return (
+					<a
+						href={link.href}
+						data-nav={link.match}
+						class:list={[{ active }]}
+						aria-current={active ? 'page' : undefined}
+					>
+						{link.label}
+					</a>
+				);
+			})}
+		</nav>
+
+		<div class="header-actions">
+			<button
+				class="theme-toggle"
+				type="button"
+				aria-label="Switch to light mode"
+				title="Toggle light / dark mode"
+			>
+				<svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+					<circle cx="12" cy="12" r="4"></circle>
+					<path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path>
+				</svg>
+				<svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+					<path d="M21 14.5A8.5 8.5 0 1 1 9.5 3a7 7 0 0 0 11.5 11.5z"></path>
+				</svg>
+			</button>
+			<a class="header-cta" href="/contact">Work together <span aria-hidden="true">↗</span></a>
+			<button
+				class="nav-toggle"
+				type="button"
+				aria-expanded="false"
+				aria-controls="site-nav"
+				aria-label="Open menu"
+			>
+				<span></span>
+				<span></span>
+			</button>
+		</div>
+</header>
+
+<script>
+	function initNavbar() {
+		const nav = document.querySelector('#site-nav');
+		const toggle = document.querySelector('.nav-toggle');
+		const themeToggle = document.querySelector('.theme-toggle');
+		const navLinks = Array.from(document.querySelectorAll<HTMLAnchorElement>('#site-nav a[data-nav]'));
+
+		function setActive(match: string | null | undefined) {
+			navLinks.forEach((link) => {
+				const on = Boolean(match) && link.dataset.nav === match;
+				link.classList.toggle('active', on);
+				if (on) link.setAttribute('aria-current', 'page');
+				else link.removeAttribute('aria-current');
+			});
+		}
+
+		function resolveActive() {
+			const path = window.location.pathname.replace(/\/$/, '') || '/';
+			const hash = window.location.hash.replace('#', '');
+
+			if (path === '/about') return setActive('about');
+			if (path === '/contact') return setActive('contact');
+			if (path === '/') {
+				if (hash === 'projects') return setActive('projects');
+				return setActive('home');
+			}
+			setActive(null);
+		}
+
+		function syncThemeToggle(theme: string) {
+			const next = theme === 'dark' ? 'light' : 'dark';
+			themeToggle?.setAttribute('aria-label', `Switch to ${next} mode`);
+		}
+
+		function applyTheme(theme: 'light' | 'dark') {
+			document.documentElement.setAttribute('data-theme', theme);
+			localStorage.setItem('theme', theme);
+			syncThemeToggle(theme);
+		}
+
+		function restoreTheme() {
+			const stored = localStorage.getItem('theme');
+			const theme = stored === 'light' || stored === 'dark'
+				? stored
+				: (document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark');
+			applyTheme(theme);
+		}
+
+		navLinks.forEach((link) => {
+			link.onclick = () => {
+				setActive(link.dataset.nav);
+				nav?.classList.remove('is-open');
+				toggle?.setAttribute('aria-expanded', 'false');
+				toggle?.setAttribute('aria-label', 'Open menu');
+			};
+		});
+
+		if (toggle) {
+			toggle.onclick = () => {
+				const open = nav?.classList.toggle('is-open');
+				toggle.setAttribute('aria-expanded', String(Boolean(open)));
+				toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+			};
+		}
+
+		if (themeToggle) {
+			themeToggle.onclick = () => {
+				const current = document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+				applyTheme(current === 'dark' ? 'light' : 'dark');
+			};
+		}
+
+		restoreTheme();
+		resolveActive();
+	}
+
+	document.addEventListener('astro:page-load', initNavbar);
+	initNavbar();
+	window.addEventListener('hashchange', () => {
+		const path = window.location.pathname.replace(/\/$/, '') || '/';
+		const hash = window.location.hash.replace('#', '');
+		const navLinks = Array.from(document.querySelectorAll<HTMLAnchorElement>('#site-nav a[data-nav]'));
+		navLinks.forEach((link) => {
+			let on = false;
+			if (path === '/' && hash === 'projects') on = link.dataset.nav === 'projects';
+			else if (path === '/' && !hash) on = link.dataset.nav === 'home';
+			else if (path === '/about') on = link.dataset.nav === 'about';
+			else if (path === '/contact') on = link.dataset.nav === 'contact';
+			link.classList.toggle('active', on);
+		});
+	});
+</script>

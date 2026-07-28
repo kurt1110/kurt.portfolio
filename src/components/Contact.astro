@@ -1,0 +1,256 @@
+---
+import Mail from 'lucide-astro/Mail';
+import Phone from 'lucide-astro/Phone';
+import MapPin from 'lucide-astro/MapPin';
+import Clock from 'lucide-astro/Clock';
+import ArrowUpRight from 'lucide-astro/ArrowUpRight';
+import Send from 'lucide-astro/Send';
+import Lock from 'lucide-astro/Lock';
+import Github from 'lucide-astro/Github';
+import Facebook from 'lucide-astro/Facebook';
+import Instagram from 'lucide-astro/Instagram';
+import AppWindow from 'lucide-astro/AppWindow';
+import Briefcase from 'lucide-astro/Briefcase';
+import PanelTop from 'lucide-astro/PanelTop';
+import Server from 'lucide-astro/Server';
+import MoreHorizontal from 'lucide-astro/MoreHorizontal';
+import {
+	socials,
+	contactInfo,
+	projectTypes,
+} from '../data/socials';
+
+const typeIcons = {
+	'Custom Web App': AppWindow,
+	'Portfolio / Brand Site': Briefcase,
+	'Landing Page': PanelTop,
+	'API / Backend': Server,
+	Other: MoreHorizontal,
+} as const;
+
+const socialIcons = {
+	GitHub: Github,
+	Facebook: Facebook,
+	Instagram: Instagram,
+} as const;
+---
+
+<section id="contact" class="contact-section">
+	<div class="contact-intro">
+		<p class="eyebrow">Contact</p>
+		<h2>Let’s build something solid.</h2>
+		<p>
+			Tell me about your idea, timeline, and goals — I’ll reply with next steps and how we can move forward.
+		</p>
+	</div>
+
+	<div class="contact-layout">
+		<aside class="contact-info-card">
+			<div class="contact-status">
+				<span class="contact-status-dot" aria-hidden="true"></span>
+				<span>{contactInfo.status}</span>
+			</div>
+
+			<ul class="contact-details">
+				<li>
+					<span class="contact-detail-label"><Mail size={14} stroke-width={1.8} /> Email</span>
+					<a href={`mailto:${contactInfo.email}`}>
+						{contactInfo.email}
+						<ArrowUpRight size={15} stroke-width={1.8} />
+					</a>
+				</li>
+				<li>
+					<span class="contact-detail-label"><Phone size={14} stroke-width={1.8} /> Facebook</span>
+					<a href={contactInfo.facebook} target="_blank" rel="noreferrer">
+						{contactInfo.facebookLabel}
+						<ArrowUpRight size={15} stroke-width={1.8} />
+					</a>
+				</li>
+				<li>
+					<span class="contact-detail-label"><MapPin size={14} stroke-width={1.8} /> Location</span>
+					<a href={contactInfo.mapsUrl} target="_blank" rel="noreferrer">
+						{contactInfo.location}
+						<ArrowUpRight size={15} stroke-width={1.8} />
+					</a>
+				</li>
+				<li>
+					<span class="contact-detail-label"><Clock size={14} stroke-width={1.8} /> Availability</span>
+					<a href={`mailto:${contactInfo.email}?subject=${encodeURIComponent('Project availability inquiry')}`}>
+						{contactInfo.availability}
+						<ArrowUpRight size={15} stroke-width={1.8} />
+					</a>
+				</li>
+			</ul>
+
+			<div class="contact-socials">
+				{socials.map((social) => {
+					const Icon = socialIcons[social.label as keyof typeof socialIcons];
+					return (
+						<a
+							class="contact-social"
+							href={social.href}
+							target="_blank"
+							rel="noreferrer"
+							aria-label={social.label}
+							title={social.label}
+						>
+							<Icon size={18} stroke-width={1.8} />
+						</a>
+					);
+				})}
+			</div>
+		</aside>
+
+		<form class="contact-form" id="contact-form" novalidate>
+		<div class="contact-field">
+			<label for="contact-name">Full name</label>
+			<input id="contact-name" name="name" type="text" placeholder="Your name" required autocomplete="name" />
+			<p class="contact-error" data-error-for="name" hidden>Name is required</p>
+		</div>
+
+		<div class="contact-field">
+			<label for="contact-email">Email</label>
+			<input id="contact-email" name="email" type="email" placeholder="you@email.com" required autocomplete="email" />
+			<p class="contact-error" data-error-for="email" hidden>Email is required</p>
+		</div>
+
+		<div class="contact-field">
+			<label for="contact-company">Company / Organization <span>(optional)</span></label>
+			<input id="contact-company" name="company" type="text" placeholder="Company name" autocomplete="organization" />
+		</div>
+
+		<fieldset class="contact-fieldset">
+			<legend>Project type</legend>
+			<div class="contact-type-grid">
+				{projectTypes.map((type, i) => {
+					const Icon = typeIcons[type as keyof typeof typeIcons];
+					return (
+						<label class="contact-type-option">
+							<input type="radio" name="projectType" value={type} required={i === 0} />
+							<span>
+								<Icon size={16} stroke-width={1.8} />
+								{type}
+							</span>
+						</label>
+					);
+				})}
+			</div>
+			<p class="contact-error" data-error-for="projectType" hidden>Select a project type</p>
+		</fieldset>
+
+		<div class="contact-field contact-field-area">
+			<div class="contact-area-head">
+				<label for="contact-details">Project details</label>
+				<span class="contact-counter" id="contact-counter">0/20 min</span>
+			</div>
+			<textarea
+				id="contact-details"
+				name="details"
+				rows="5"
+				placeholder="Share goals, features, timeline, or anything useful…"
+				required
+				minlength="20"
+			></textarea>
+			<p class="contact-error" data-error-for="details" hidden>Please add at least 20 characters</p>
+		</div>
+
+		<div class="contact-form-footer">
+			<button class="contact-submit" type="submit">
+				<Send size={17} stroke-width={1.8} />
+				Send inquiry
+			</button>
+			<p class="contact-privacy">
+				<Lock size={14} stroke-width={1.8} />
+				Your details stay private.
+			</p>
+		</div>
+
+		<p class="contact-success" id="contact-success" hidden>
+			Thanks — your inquiry was sent. I’ll get back to you soon.
+		</p>
+		<p class="contact-error" id="contact-submit-error" hidden>
+			Something went wrong. Please email me directly or try again.
+		</p>
+	</form>
+</div>
+</section>
+
+<script>
+	function initContactForm() {
+		const form = document.querySelector('#contact-form');
+		if (!form || form.dataset.bound === 'true') return;
+		form.dataset.bound = 'true';
+
+		const details = document.querySelector('#contact-details');
+		const counter = document.querySelector('#contact-counter');
+		const success = document.querySelector('#contact-success');
+		const submitError = document.querySelector('#contact-submit-error');
+		const submitBtn = form.querySelector('.contact-submit');
+
+		function setError(name, show) {
+			const el = form.querySelector(`[data-error-for="${name}"]`);
+			if (el) el.hidden = !show;
+		}
+
+		details?.addEventListener('input', () => {
+			if (counter && details) counter.textContent = `${details.value.trim().length}/20 min`;
+		});
+
+		form.addEventListener('submit', async (event) => {
+			event.preventDefault();
+
+			const data = new FormData(form);
+			const name = String(data.get('name') || '').trim();
+			const email = String(data.get('email') || '').trim();
+			const company = String(data.get('company') || '').trim();
+			const projectType = String(data.get('projectType') || '').trim();
+			const projectDetails = String(data.get('details') || '').trim();
+
+			const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+			setError('name', !name);
+			setError('email', !emailOk);
+			setError('projectType', !projectType);
+			setError('details', projectDetails.length < 20);
+			if (success) success.hidden = true;
+			if (submitError) submitError.hidden = true;
+
+			if (!name || !emailOk || !projectType || projectDetails.length < 20) return;
+
+			if (submitBtn instanceof HTMLButtonElement) {
+				submitBtn.disabled = true;
+				submitBtn.dataset.label = submitBtn.innerHTML;
+				submitBtn.textContent = 'Sending…';
+			}
+
+			try {
+				const res = await fetch('/api/contact', {
+					method: 'POST',
+					headers: { 'Content-Type': 'application/json' },
+					body: JSON.stringify({
+						name,
+						email,
+						company,
+						projectType,
+						details: projectDetails,
+					}),
+				});
+
+				if (!res.ok) throw new Error('Request failed');
+
+				if (success) success.hidden = false;
+				form.reset();
+				if (counter) counter.textContent = '0/20 min';
+			} catch (_) {
+				if (submitError) submitError.hidden = false;
+			} finally {
+				if (submitBtn instanceof HTMLButtonElement) {
+					submitBtn.disabled = false;
+					submitBtn.innerHTML = submitBtn.dataset.label || 'Send inquiry';
+				}
+			}
+		});
+	}
+
+	document.addEventListener('astro:page-load', initContactForm);
+	initContactForm();
+</script>

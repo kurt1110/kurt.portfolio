@@ -1,0 +1,100 @@
+---
+import '../styles/global.css';
+import { ClientRouter, fade } from 'astro:transitions';
+import Loader from '../components/Loader.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+
+interface Props { title?: string; description?: string; }
+const { title = 'Kurt Andrei C. Arata | Full-stack developer', description = 'Kurt Andrei C. Arata is a full-stack developer turning ideas into digital solutions.' } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url.origin);
+---
+<!doctype html>
+<html lang="en" data-theme="dark">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+		<link rel="icon" href="/favicon.svg" />
+		<meta name="generator" content={Astro.generator} />
+		<meta name="description" content={description} />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:image" content={`${Astro.url.origin}/og-image.png`} />
+		<link rel="canonical" href={canonical} />
+		<title>{title}</title>
+		<ClientRouter />
+		<style is:inline>
+			html.is-loading,html.is-loading body{overflow:hidden}
+			.page-loader{position:fixed;inset:0;z-index:9999;display:grid;place-items:center;background:#07080f;color:#f4f5ff}
+			html[data-theme='light'] .page-loader{background:#f3f5fb;color:#12141f}
+			html[data-show-loader='false'] .page-loader{display:none!important}
+		</style>
+		<script is:inline>
+			(function () {
+				function getTheme() {
+					try {
+						var stored = localStorage.getItem('theme');
+						if (stored === 'light' || stored === 'dark') return stored;
+						return window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+					} catch (e) {
+						return 'dark';
+					}
+				}
+
+				function applyTheme(root, theme) {
+					root.setAttribute('data-theme', theme);
+				}
+
+				var theme = getTheme();
+				applyTheme(document.documentElement, theme);
+				try {
+					localStorage.setItem('theme', theme);
+				} catch (e) {}
+
+				// Persist theme across View Transitions (all pages)
+				if (!window.__themeListenersBound) {
+					window.__themeListenersBound = true;
+					document.addEventListener('astro:before-swap', function (event) {
+						applyTheme(event.newDocument.documentElement, getTheme());
+					});
+					document.addEventListener('astro:after-swap', function () {
+						applyTheme(document.documentElement, getTheme());
+					});
+				}
+
+				try {
+					var nav = performance.getEntriesByType && performance.getEntriesByType('navigation')[0];
+					var isReload = nav && nav.type === 'reload';
+					var fromSameSite = false;
+					try {
+						fromSameSite = !!(document.referrer && new URL(document.referrer).origin === location.origin);
+					} catch (err) {}
+
+					if (isReload || !fromSameSite) {
+						document.documentElement.classList.add('is-loading');
+						document.documentElement.setAttribute('data-show-loader', 'true');
+					} else {
+						document.documentElement.setAttribute('data-show-loader', 'false');
+					}
+				} catch (e) {
+					document.documentElement.classList.add('is-loading');
+					document.documentElement.setAttribute('data-show-loader', 'true');
+				}
+			})();
+		</script>
+	</head>
+	<body>
+		<div class="scene-3d" aria-hidden="true" transition:persist="scene"></div>
+		<div transition:persist="loader">
+			<Loader />
+		</div>
+		<div transition:persist="nav">
+			<Navbar />
+		</div>
+		<main transition:animate={fade({ duration: '0.4s' })}>
+			<slot />
+		</main>
+		<Footer transition:animate={fade({ duration: '0.4s' })} />
+		<script src="../scripts/animations.ts"></script>
+	</body>
+</html>

@@ -1,0 +1,38 @@
+/* Clean modern atmosphere */
+.scene-3d {
+	position: fixed;
+	inset: 0;
+	z-index: -3;
+	pointer-events: none;
+	overflow: hidden;
+	background:
+		radial-gradient(ellipse 80% 50% at 15% 0%, var(--scene-1), transparent 55%),
+		radial-gradient(ellipse 60% 40% at 90% 10%, var(--scene-2), transparent 50%),
+		radial-gradient(ellipse 70% 45% at 50% 100%, var(--scene-3), transparent 55%),
+		var(--scene-base);
+	transition: background 280ms ease;
+}
+
+.site-header-inner,
+.toolkit-shell {
+	box-shadow:
+		var(--inset-highlight),
+		var(--shadow-soft);
+}
+
+.toolkit-card:hover,
+.project-card:hover {
+	transform: translateY(-4px);
+	box-shadow:
+		var(--inset-highlight),
+		0 18px 40px rgba(113, 101, 255, .12),
+		var(--shadow-soft);
+}
+
+@media (max-width: 760px) {
+	.toolkit-card:hover,
+	.project-card:hover,
+	.hero-profile:hover .profile-card {
+		transform: none;
+	}
+}

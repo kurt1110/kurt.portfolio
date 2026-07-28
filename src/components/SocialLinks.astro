@@ -1,0 +1,33 @@
+---
+import Github from 'lucide-astro/Github';
+import Facebook from 'lucide-astro/Facebook';
+import Instagram from 'lucide-astro/Instagram';
+import { socials } from '../data/socials';
+
+const icons = {
+	GitHub: Github,
+	Facebook: Facebook,
+	Instagram: Instagram,
+} as const;
+---
+
+<div class="follow-me">
+	<p class="follow-me-label">Follow me:</p>
+	<div class="follow-me-icons">
+		{socials.map((social) => {
+			const Icon = icons[social.label as keyof typeof icons];
+			return (
+				<a
+					class="follow-me-icon"
+					href={social.href}
+					target="_blank"
+					rel="noreferrer"
+					aria-label={social.label}
+					title={social.label}
+				>
+					<Icon size={22} stroke-width={1.8} />
+				</a>
+			);
+		})}
+	</div>
+</div>

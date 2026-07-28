@@ -1,0 +1,161 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Skills from '../components/Skills.astro';
+import { languages } from '../data/skills';
+---
+<Layout title="About | Kurt Andrei C. Arata" description="Learn more about Kurt Andrei C. Arata — Information Technology student and full-stack developer from Cabanatuan City, Nueva Ecija.">
+	<section class="about-page" data-reveal>
+		<p class="eyebrow">About me</p>
+		<h1>Kurt Andrei C. Arata</h1>
+		<p class="about-page-lead">
+			I’m a 21-year-old Information Technology student at Araullo University, living in Cabanatuan City, Nueva Ecija. I build modern web applications and digital experiences — combining what I learn in school with real projects and continuous practice.
+		</p>
+
+		<ul class="about-facts">
+			<li><span>Full name</span><strong>Kurt Andrei C. Arata</strong></li>
+			<li><span>Age</span><strong>21</strong></li>
+			<li><span>Location</span><strong>Cabanatuan City, Nueva Ecija</strong></li>
+			<li><span>Education</span><strong>Araullo University — Information Technology</strong></li>
+		</ul>
+
+		<div class="about-languages-block">
+			<p class="eyebrow">Languages I use</p>
+			<ul class="about-languages">
+				{languages.map((lang) => <li>{lang}</li>)}
+			</ul>
+		</div>
+	</section>
+	<Skills />
+</Layout>
+
+<style>
+	.about-page {
+		max-width: 1120px;
+		margin: 0 auto;
+		padding: 5rem 2rem 2rem;
+	}
+
+	.about-page .eyebrow {
+		margin: 0 0 1rem;
+	}
+
+	.about-page h1 {
+		margin: 0;
+		color: var(--heading);
+		font-size: clamp(2.6rem, 6vw, 4.5rem);
+		font-weight: 800;
+		letter-spacing: -.06em;
+		line-height: .98;
+	}
+
+	.about-page-lead {
+		max-width: 42rem;
+		margin: 1.5rem 0 0;
+		color: var(--muted);
+		font-size: 1.1rem;
+		line-height: 1.75;
+	}
+
+	.about-facts {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: .85rem;
+		max-width: 52rem;
+		margin: 2.5rem 0 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.about-facts li {
+		display: grid;
+		gap: .35rem;
+		padding: 1.1rem 1.15rem;
+		border: 1px solid var(--header-border);
+		border-radius: .9rem;
+		background: var(--surface-soft);
+	}
+
+	.about-facts span {
+		color: var(--accent);
+		font-family: 'Courier New', monospace;
+		font-size: .72rem;
+		letter-spacing: .08em;
+		text-transform: uppercase;
+	}
+
+	.about-facts strong {
+		color: var(--heading);
+		font-size: 1rem;
+		font-weight: 700;
+	}
+
+	.about-languages-block {
+		margin-top: 2.5rem;
+		max-width: 52rem;
+	}
+
+	.about-languages {
+		display: flex;
+		flex-wrap: wrap;
+		gap: .6rem;
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.about-languages li {
+		padding: .55rem .9rem;
+		border: 1px solid var(--line);
+		border-radius: .6rem;
+		background: var(--surface-card);
+		color: var(--heading);
+		font-size: .92rem;
+		font-weight: 600;
+	}
+
+	@media (max-width: 760px) {
+		.about-page {
+			padding: 3rem 1.1rem 1rem;
+		}
+
+		.about-page h1 {
+			font-size: clamp(2.1rem, 10vw, 2.8rem);
+		}
+
+		.about-page-lead {
+			font-size: .98rem;
+			line-height: 1.7;
+		}
+
+		.about-facts {
+			grid-template-columns: 1fr;
+			gap: .7rem;
+			margin-top: 2rem;
+		}
+
+		.about-facts li {
+			padding: 1rem 1.05rem;
+		}
+
+		.about-facts strong {
+			overflow-wrap: anywhere;
+			font-size: .95rem;
+		}
+
+		.about-languages {
+			gap: .5rem;
+		}
+
+		.about-languages li {
+			padding: .5rem .75rem;
+			font-size: .85rem;
+		}
+	}
+
+	@media (max-width: 420px) {
+		.about-page {
+			padding-left: .9rem;
+			padding-right: .9rem;
+		}
+	}
+</style>
