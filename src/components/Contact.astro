@@ -235,13 +235,35 @@ const socialIcons = {
 					}),
 				});
 
-				if (!res.ok) throw new Error('Request failed');
+				let result: { ok?: boolean; error?: string } = {};
+				try {
+					result = await res.json();
+				} catch {
+					result = {};
+				}
+
+				if (!res.ok || !result.ok) {
+					throw new Error(result.error || 'Request failed');
+				}
 
 				if (success) success.hidden = false;
 				form.reset();
 				if (counter) counter.textContent = '0/20 min';
-			} catch (_) {
-				if (submitError) submitError.hidden = false;
+			} catch (err) {
+				if (submitError) {
+					const message = err instanceof Error ? err.message : '';
+					if (message === 'Webhook not configured') {
+						submitError.textContent =
+							'Contact form is not configured yet. Please email me directly.';
+					} else if (message.includes('Discord')) {
+						submitError.textContent =
+							'Could not deliver your message. Please email me directly or try again.';
+					} else {
+						submitError.textContent =
+							'Something went wrong. Please email me directly or try again.';
+					}
+					submitError.hidden = false;
+				}
 			} finally {
 				if (submitBtn instanceof HTMLButtonElement) {
 					submitBtn.disabled = false;

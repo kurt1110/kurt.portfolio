@@ -2,9 +2,16 @@ import type { APIRoute } from 'astro';
 
 export const prerender = false;
 
-const webhook = import.meta.env.DISCORD_WEBHOOK_URL;
+function getWebhookUrl(): string | undefined {
+	const fromProcess = typeof process !== 'undefined' ? process.env.DISCORD_WEBHOOK_URL : undefined;
+	const fromImport = import.meta.env.DISCORD_WEBHOOK_URL;
+	const value = fromProcess || fromImport;
+	return typeof value === 'string' && value.trim() ? value.trim() : undefined;
+}
 
 export const POST: APIRoute = async ({ request }) => {
+	const webhook = getWebhookUrl();
+
 	if (!webhook) {
 		return new Response(JSON.stringify({ ok: false, error: 'Webhook not configured' }), {
 			status: 500,
@@ -40,24 +47,32 @@ export const POST: APIRoute = async ({ request }) => {
 		title: 'New portfolio inquiry',
 		color: 0x7165ff,
 		fields: [
-			{ name: 'Name', value: name, inline: true },
-			{ name: 'Email', value: email, inline: true },
-			...(company ? [{ name: 'Company', value: company, inline: true }] : []),
-			{ name: 'Project type', value: projectType, inline: false },
+			{ name: 'Name', value: name.slice(0, 256), inline: true },
+			{ name: 'Email', value: email.slice(0, 256), inline: true },
+			...(company ? [{ name: 'Company', value: company.slice(0, 256), inline: true }] : []),
+			{ name: 'Project type', value: projectType.slice(0, 256), inline: false },
 			{ name: 'Details', value: details.slice(0, 1000) },
 		],
 		timestamp: new Date().toISOString(),
 		footer: { text: 'Kurt.dev contact form' },
 	};
 
-	const discordRes = await fetch(webhook, {
-		method: 'POST',
-		headers: { 'Content-Type': 'application/json' },
-		body: JSON.stringify({
-			username: 'Portfolio Contact',
-			embeds: [embed],
-		}),
-	});
+	let discordRes: Response;
+	try {
+		discordRes = await fetch(webhook, {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({
+				username: 'Portfolio Contact',
+				embeds: [embed],
+			}),
+		});
+	} catch {
+		return new Response(JSON.stringify({ ok: false, error: 'Could not reach Discord' }), {
+			status: 502,
+			headers: { 'Content-Type': 'application/json' },
+		});
+	}
 
 	if (!discordRes.ok) {
 		return new Response(JSON.stringify({ ok: false, error: 'Discord webhook failed' }), {
