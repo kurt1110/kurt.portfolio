@@ -1,0 +1,56 @@
+---
+---
+
+<div
+	class="scroll-progress"
+	id="scroll-progress"
+	role="progressbar"
+	aria-label="Reading progress"
+	aria-valuemin="0"
+	aria-valuemax="100"
+	aria-valuenow="0"
+	transition:persist="scroll-progress"
+>
+	<span class="scroll-progress-bar" id="scroll-progress-bar"></span>
+</div>
+
+<script>
+	function getScrollProgress() {
+		const doc = document.documentElement;
+		const scrollTop = window.scrollY || doc.scrollTop;
+		const height = doc.scrollHeight - window.innerHeight;
+		if (height <= 0) return 0;
+		return Math.min(100, Math.max(0, (scrollTop / height) * 100));
+	}
+
+	function updateScrollProgress() {
+		const root = document.querySelector('#scroll-progress');
+		const bar = document.querySelector('#scroll-progress-bar');
+		if (!root || !bar) return;
+
+		const progress = getScrollProgress();
+		bar.style.transform = `scaleX(${progress / 100})`;
+		root.setAttribute('aria-valuenow', String(Math.round(progress)));
+		root.classList.toggle('is-visible', progress > 0.5);
+	}
+
+	let ticking = false;
+	function onScroll() {
+		if (ticking) return;
+		ticking = true;
+		requestAnimationFrame(() => {
+			updateScrollProgress();
+			ticking = false;
+		});
+	}
+
+	if (!window.__scrollProgressBound) {
+		window.__scrollProgressBound = true;
+		window.addEventListener('scroll', onScroll, { passive: true });
+		window.addEventListener('resize', onScroll, { passive: true });
+		document.addEventListener('astro:page-load', updateScrollProgress);
+		document.addEventListener('astro:after-swap', updateScrollProgress);
+	}
+
+	updateScrollProgress();
+</script>

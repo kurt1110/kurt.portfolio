@@ -4,6 +4,8 @@ import { ClientRouter, fade } from 'astro:transitions';
 import Loader from '../components/Loader.astro';
 import Navbar from '../components/Navbar.astro';
 import Footer from '../components/Footer.astro';
+import SceneBackground from '../components/SceneBackground.astro';
+import ScrollProgress from '../components/ScrollProgress.astro';
 
 interface Props { title?: string; description?: string; }
 const { title = 'Kurt Andrei C. Arata | Full-stack developer', description = 'Kurt Andrei C. Arata is a full-stack developer turning ideas into digital solutions.' } = Astro.props;
@@ -84,7 +86,8 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url.origin);
 		</script>
 	</head>
 	<body>
-		<div class="scene-3d" aria-hidden="true" transition:persist="scene"></div>
+		<SceneBackground />
+		<ScrollProgress />
 		<div transition:persist="loader">
 			<Loader />
 		</div>

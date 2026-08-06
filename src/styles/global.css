@@ -4,6 +4,7 @@
 @import "./skills.css";
 @import "./theme-3d.css";
 @import "./loader.css";
+@import "./scroll-progress.css";
 
 :root,
 html[data-theme='dark'] {
@@ -37,9 +38,9 @@ html[data-theme='dark'] {
 	--shadow-soft: 0 14px 40px rgba(0, 0, 0, .28);
 	--shadow-strong: 0 30px 80px rgba(0, 0, 0, .35);
 	--inset-highlight: 0 1px 0 rgba(255, 255, 255, .05) inset;
-	--scene-1: rgba(113, 101, 255, .12);
-	--scene-2: rgba(45, 212, 232, .08);
-	--scene-3: rgba(113, 101, 255, .06);
+	--scene-1: rgba(113, 101, 255, .18);
+	--scene-2: rgba(45, 212, 232, .12);
+	--scene-3: rgba(113, 101, 255, .1);
 	--scene-base: linear-gradient(180deg, #0a0b14 0%, #07080f 50%, #06070d 100%);
 	--brand-hover: #fff;
 	--hamburger: #f4f5ff;
@@ -76,9 +77,9 @@ html[data-theme='light'] {
 	--shadow-soft: 0 14px 40px rgba(40, 50, 100, .1);
 	--shadow-strong: 0 24px 60px rgba(40, 50, 100, .12);
 	--inset-highlight: 0 1px 0 rgba(255, 255, 255, .8) inset;
-	--scene-1: rgba(91, 79, 255, .1);
-	--scene-2: rgba(14, 155, 181, .08);
-	--scene-3: rgba(91, 79, 255, .06);
+	--scene-1: rgba(91, 79, 255, .16);
+	--scene-2: rgba(14, 155, 181, .12);
+	--scene-3: rgba(91, 79, 255, .1);
 	--scene-base: linear-gradient(180deg, #f7f8fd 0%, #f3f5fb 50%, #eef1f8 100%);
 	--brand-hover: #12141f;
 	--hamburger: #16182a;

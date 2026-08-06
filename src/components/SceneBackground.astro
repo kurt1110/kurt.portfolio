@@ -1,0 +1,121 @@
+---
+const icons = [
+	{ id: 'react', label: 'React', x: 6, y: 14, delay: 0, size: 1 },
+	{ id: 'node', label: 'Node.js', x: 88, y: 12, delay: 1.2, size: 0.95 },
+	{ id: 'astro', label: 'Astro', x: 12, y: 72, delay: 2.1, size: 0.9 },
+	{ id: 'tailwind', label: 'Tailwind', x: 84, y: 68, delay: 0.6, size: 0.92 },
+	{ id: 'ts', label: 'TypeScript', x: 4, y: 42, delay: 1.8, size: 0.88 },
+	{ id: 'js', label: 'JavaScript', x: 92, y: 40, delay: 2.8, size: 0.86 },
+	{ id: 'mongo', label: 'MongoDB', x: 18, y: 88, delay: 0.9, size: 0.85 },
+	{ id: 'docker', label: 'Docker', x: 78, y: 86, delay: 2.4, size: 0.9 },
+	{ id: 'git', label: 'Git', x: 28, y: 8, delay: 3.2, size: 0.8 },
+	{ id: 'figma', label: 'Figma', x: 70, y: 6, delay: 1.5, size: 0.82 },
+	{ id: 'firebase', label: 'Firebase', x: 94, y: 78, delay: 3.6, size: 0.84 },
+	{ id: 'express', label: 'Express', x: 8, y: 58, delay: 2.0, size: 0.8 },
+	{ id: 'html', label: 'HTML5', x: 62, y: 90, delay: 0.4, size: 0.78 },
+	{ id: 'css', label: 'CSS3', x: 40, y: 92, delay: 2.6, size: 0.78 },
+];
+
+const snippets = [
+	{ text: '<div>', x: 16, y: 28, delay: 0.3 },
+	{ text: 'const', x: 78, y: 22, delay: 1.1 },
+	{ text: 'function()', x: 8, y: 50, delay: 2.0 },
+	{ text: 'async', x: 86, y: 52, delay: 0.7 },
+	{ text: 'await', x: 22, y: 64, delay: 1.6 },
+	{ text: 'useState()', x: 74, y: 58, delay: 2.5 },
+	{ text: '=>', x: 48, y: 10, delay: 1.9 },
+	{ text: 'import', x: 58, y: 82, delay: 0.5 },
+	{ text: 'export', x: 34, y: 18, delay: 2.8 },
+	{ text: '{}', x: 90, y: 30, delay: 1.4 },
+	{ text: 'className', x: 12, y: 82, delay: 3.1 },
+	{ text: 'npm install', x: 66, y: 34, delay: 2.2 },
+];
+
+const panels = [
+	{ x: 3, y: 20, w: 11, h: 16, delay: 0 },
+	{ x: 86, y: 18, w: 10, h: 14, delay: 1.4 },
+	{ x: 5, y: 68, w: 9, h: 12, delay: 2.2 },
+	{ x: 88, y: 64, w: 9, h: 13, delay: 0.8 },
+];
+
+const particles = Array.from({ length: 28 }, (_, i) => ({
+	x: ((i * 37) % 97) + 1.5,
+	y: ((i * 53) % 93) + 2,
+	delay: (i % 10) * 0.45,
+	dur: 10 + (i % 7) * 1.6,
+	size: 1 + (i % 3),
+}));
+---
+
+<div class="scene-3d" aria-hidden="true" transition:persist="scene">
+	<div class="scene-base"></div>
+	<div class="scene-neon"></div>
+
+	<svg class="scene-circuits" viewBox="0 0 100 100" preserveAspectRatio="none">
+		<path class="circuit circuit--a" d="M2 18 H18 V32 H8 V48 H22 V62" />
+		<path class="circuit circuit--b" d="M98 16 H82 V30 H92 V52 H78 V70" />
+		<path class="circuit circuit--c" d="M4 78 H20 V88 H36" />
+		<path class="circuit circuit--d" d="M96 80 H80 V90 H64" />
+		<path class="circuit circuit--e" d="M30 6 H46 V14 H58" />
+		<path class="circuit circuit--f" d="M70 8 H58 V16" />
+		<path class="circuit circuit--g" d="M10 40 H16 V56 H28" />
+		<path class="circuit circuit--h" d="M90 42 H84 V58 H72" />
+		<circle class="circuit-node" cx="18" cy="32" r="0.55" />
+		<circle class="circuit-node" cx="82" cy="30" r="0.55" />
+		<circle class="circuit-node" cx="22" cy="62" r="0.45" />
+		<circle class="circuit-node" cx="78" cy="70" r="0.45" />
+		<circle class="circuit-node" cx="46" cy="14" r="0.4" />
+		<circle class="circuit-node" cx="16" cy="56" r="0.4" />
+		<circle class="circuit-node" cx="84" cy="58" r="0.4" />
+		<circle class="circuit-node" cx="20" cy="88" r="0.4" />
+		<circle class="circuit-node" cx="80" cy="90" r="0.4" />
+	</svg>
+
+	<div class="scene-holos">
+		{panels.map((p) => (
+			<div
+				class="holo-panel"
+				style={`--x:${p.x}%;--y:${p.y}%;--w:${p.w}%;--h:${p.h}%;--d:${p.delay}s`}
+			>
+				<span class="holo-scan"></span>
+				<span class="holo-corner holo-corner--tl"></span>
+				<span class="holo-corner holo-corner--tr"></span>
+				<span class="holo-corner holo-corner--bl"></span>
+				<span class="holo-corner holo-corner--br"></span>
+			</div>
+		))}
+	</div>
+
+	<div class="scene-icons">
+		{icons.map((icon) => (
+			<span
+				class={`fx-icon fx-icon--${icon.id}`}
+				style={`--x:${icon.x}%;--y:${icon.y}%;--d:${icon.delay}s;--s:${icon.size}`}
+			>
+				{icon.label}
+			</span>
+		))}
+	</div>
+
+	<div class="scene-snippets">
+		{snippets.map((s) => (
+			<code
+				class="fx-snippet"
+				style={`--x:${s.x}%;--y:${s.y}%;--d:${s.delay}s`}
+			>
+				{s.text}
+			</code>
+		))}
+	</div>
+
+	<div class="scene-particles">
+		{particles.map((p) => (
+			<span
+				class="fx-particle"
+				style={`--x:${p.x}%;--y:${p.y}%;--d:${p.delay}s;--dur:${p.dur}s;--sz:${p.size}px`}
+			></span>
+		))}
+	</div>
+
+	<div class="scene-veil"></div>
+</div>

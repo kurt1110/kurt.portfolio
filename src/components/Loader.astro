@@ -1,14 +1,29 @@
 ---
 ---
 
-<div class="page-loader" id="page-loader" role="status" aria-live="polite" aria-label="Loading portfolio">
+<div class="page-loader page-loader--cyber" id="page-loader" role="status" aria-live="polite" aria-label="Loading portfolio">
+	<div class="page-loader-grid" aria-hidden="true"></div>
+	<div class="page-loader-orb page-loader-orb--a" aria-hidden="true"></div>
+	<div class="page-loader-orb page-loader-orb--b" aria-hidden="true"></div>
+
 	<div class="page-loader-inner">
+		<div class="page-loader-ring" aria-hidden="true">
+			<span class="page-loader-ring-spin"></span>
+			<span class="page-loader-core"></span>
+		</div>
+
 		<p class="page-loader-brand">Kurt<span>.</span>dev</p>
 		<p class="page-loader-tag">Turning Ideas into Digital Solutions.</p>
+
 		<div class="page-loader-track" aria-hidden="true">
 			<span class="page-loader-bar"></span>
+			<span class="page-loader-ticks"></span>
 		</div>
-		<p class="page-loader-status">Loading experience</p>
+
+		<p class="page-loader-status">
+			<span class="page-loader-status-dot"></span>
+			Initializing systems
+		</p>
 	</div>
 </div>
 
@@ -16,13 +31,30 @@
 	const loader = document.querySelector('#page-loader');
 	const shouldShow = document.documentElement.getAttribute('data-show-loader') === 'true';
 	const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-	const minTime = reducedMotion ? 0 : 900;
+	const minTime = reducedMotion ? 0 : 1100;
 	const started = performance.now();
+
+	const statusEl = loader?.querySelector('.page-loader-status');
+	const statuses = [
+		'Initializing systems',
+		'Loading modules',
+		'Syncing interface',
+		'Almost ready',
+	];
+	let statusIndex = 0;
+	let statusTimer;
+
+	function cycleStatus() {
+		if (!statusEl || reducedMotion) return;
+		statusIndex = (statusIndex + 1) % statuses.length;
+		statusEl.innerHTML = `<span class="page-loader-status-dot"></span>${statuses[statusIndex]}`;
+	}
 
 	function removeLoader(immediate = false) {
 		if (!loader) return;
 		document.documentElement.classList.remove('is-loading');
 		document.documentElement.removeAttribute('data-show-loader');
+		if (statusTimer) window.clearInterval(statusTimer);
 
 		const finish = () => {
 			loader.remove();
@@ -47,6 +79,7 @@
 	if (!shouldShow) {
 		removeLoader(true);
 	} else {
+		if (!reducedMotion) statusTimer = window.setInterval(cycleStatus, 700);
 		if (document.readyState === 'complete') hideLoader();
 		else window.addEventListener('load', hideLoader, { once: true });
 		window.setTimeout(hideLoader, 4000);
