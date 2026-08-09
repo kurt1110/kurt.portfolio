@@ -1,15 +1,16 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Skills from '../components/Skills.astro';
-import { languages } from '../data/skills';
 ---
 <Layout title="About | Kurt Andrei C. Arata" description="Learn more about Kurt Andrei C. Arata — Information Technology student and full-stack developer from Cabanatuan City, Nueva Ecija.">
 	<section class="about-page" data-reveal>
 		<p class="eyebrow">About me</p>
-		<h1>Kurt Andrei C. Arata</h1>
 		<p class="about-page-lead">
-			I’m a 21-year-old Information Technology student at Araullo University, living in Cabanatuan City, Nueva Ecija. I build modern web applications and digital experiences — combining what I learn in school with real projects and continuous practice.
-		</p>
+			Information Technology student at Araullo University, based in Cabanatuan City, Nueva Ecija.
+			I focus on full-stack development — building practical web systems with tools like React, Astro, TypeScript, Node.js, PHP, and SQL.
+			My work includes client and school projects such as a live logistics platform, bus tracking tools, education dashboards, and game discovery apps.
+			I’m always learning through real builds, and I’m currently available for freelance and project work.
+		</p>	
 
 		<ul class="about-facts">
 			<li><span>Full name</span><strong>Kurt Andrei C. Arata</strong></li>
@@ -17,13 +18,6 @@ import { languages } from '../data/skills';
 			<li><span>Location</span><strong>Cabanatuan City, Nueva Ecija</strong></li>
 			<li><span>Education</span><strong>Araullo University — Information Technology</strong></li>
 		</ul>
-
-		<div class="about-languages-block">
-			<p class="eyebrow">Languages I use</p>
-			<ul class="about-languages">
-				{languages.map((lang) => <li>{lang}</li>)}
-			</ul>
-		</div>
 	</section>
 	<Skills />
 </Layout>
@@ -39,20 +33,11 @@ import { languages } from '../data/skills';
 		margin: 0 0 1rem;
 	}
 
-	.about-page h1 {
-		margin: 0;
-		color: var(--heading);
-		font-size: clamp(2.6rem, 6vw, 4.5rem);
-		font-weight: 800;
-		letter-spacing: -.06em;
-		line-height: .98;
-	}
-
 	.about-page-lead {
 		max-width: 42rem;
-		margin: 1.5rem 0 0;
+		margin: 0;
 		color: var(--muted);
-		font-size: 1.1rem;
+		font-size: 1rem;
 		line-height: 1.75;
 	}
 
@@ -89,41 +74,13 @@ import { languages } from '../data/skills';
 		font-weight: 700;
 	}
 
-	.about-languages-block {
-		margin-top: 2.5rem;
-		max-width: 52rem;
-	}
-
-	.about-languages {
-		display: flex;
-		flex-wrap: wrap;
-		gap: .6rem;
-		margin: 0;
-		padding: 0;
-		list-style: none;
-	}
-
-	.about-languages li {
-		padding: .55rem .9rem;
-		border: 1px solid var(--line);
-		border-radius: .6rem;
-		background: var(--surface-card);
-		color: var(--heading);
-		font-size: .92rem;
-		font-weight: 600;
-	}
-
 	@media (max-width: 760px) {
 		.about-page {
 			padding: 3rem 1.1rem 1rem;
 		}
 
-		.about-page h1 {
-			font-size: clamp(2.1rem, 10vw, 2.8rem);
-		}
-
 		.about-page-lead {
-			font-size: .98rem;
+			font-size: .95rem;
 			line-height: 1.7;
 		}
 
@@ -140,15 +97,6 @@ import { languages } from '../data/skills';
 		.about-facts strong {
 			overflow-wrap: anywhere;
 			font-size: .95rem;
-		}
-
-		.about-languages {
-			gap: .5rem;
-		}
-
-		.about-languages li {
-			padding: .5rem .75rem;
-			font-size: .85rem;
 		}
 	}
 
